@@ -74,6 +74,10 @@ public class ApiCalls {
 
 
         }
+        /**
+         * I dont know what the bankid endpoint wants more, however I do get this method in response so I figured i'd try it..
+         *
+         */
         try {
             HttpRequest request = HttpRequest.newBuilder().GET().headers("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0", "Authorization", "QjdkWkhRY1k3OFZSVno5bDoxNjM5NzgwNDczNTg1", "X-Client", "fdp-internet-bank/185.0.0", "Content-Type", "application/json").uri(URI.create("https://online.swedbank.se/TDE_DAP_Portal_REST_WEB/api/v5/identification/bankid/mobile/verify")).header("Cookie", JSESSIONID.getValue()).header("Cookie", SWBTC.getValue()).header("Cookie", TS01dcfcda.getValue()).build();
 
