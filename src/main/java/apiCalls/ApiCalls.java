@@ -13,7 +13,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -74,20 +73,39 @@ public class ApiCalls {
 
 
         }
-        /**
-         * I dont know what the bankid endpoint wants more, however I do get this method in response so I figured i'd try it..
-         *
-         */
+        return body.body();
+    }
+    /**
+     * I dont know what the bankid endpoint wants more, however I do get this method in response so I figured i'd try it..
+     *
+     */
+
+    public static String checkStatus(CookieStore cookies) {
+        String body = null;
+
+        Cookie JSESSIONID = cookies.getCookies().get(0);
+        Cookie SWBTC = cookies.getCookies().get(1);
+        Cookie TS014396a4 = cookies.getCookies().get(2);
+        Cookie TS01dcfcda = cookies.getCookies().get(3);
         try {
-            HttpRequest request = HttpRequest.newBuilder().GET().headers("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0", "Authorization", "QjdkWkhRY1k3OFZSVno5bDoxNjM5NzgwNDczNTg1", "X-Client", "fdp-internet-bank/185.0.0", "Content-Type", "application/json").uri(URI.create("https://online.swedbank.se/TDE_DAP_Portal_REST_WEB/api/v5/identification/bankid/mobile/verify")).header("Cookie", JSESSIONID.getValue()).header("Cookie", SWBTC.getValue()).header("Cookie", TS01dcfcda.getValue()).build();
+            HttpRequest request = HttpRequest.newBuilder().GET().headers(
+                    "User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0",
+                    "Authorization", "QjdkWkhRY1k3OFZSVno5bDoxNjM5NzgwNDczNTg1", "X-Client", "fdp-internet-bank/185.0.0",
+                    "Content-Type", "application/json")
+                    .uri(URI.create("https://online.swedbank.se/TDE_DAP_Portal_REST_WEB/api/v5/identification/bankid/mobile/verify"))
+                    .header("Cookie", JSESSIONID.getValue())
+                    .header("Cookie", SWBTC.getValue())
+                    .header("Cookie", TS01dcfcda.getValue())
+                    .build();
 
             HttpResponse<String> body1 = client.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println("BODY1" + body1.body());
-            System.out.println(body1.statusCode());
+           body = body1.body();
 
         } catch (Exception e) {
             System.out.println(e);
         }
-        return body.body();
+           return body;
     }
+
+
 }

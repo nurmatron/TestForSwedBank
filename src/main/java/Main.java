@@ -16,6 +16,17 @@ public class Main {
         List<PostObject> startBankId = convertResponseToListOfObjects(getAuthMethodAsString());
         System.out.println("please enter a personalnumber for bank id login");
         // I could not get this to work.
-        String verifyMethod = postBankIdLogin(input.next(), startBankId, getCookies());
+        postBankIdLogin(input.next(), startBankId, getCookies());
+            //Thread.Sleep is not great.. could not get it working with timer..
+        for (int i = 0; i < 10; i++) {
+            System.out.println(checkStatus(getCookies()));
+            Thread.sleep(1000);
+
+        }
+
+
+
+
     }
+
 }
