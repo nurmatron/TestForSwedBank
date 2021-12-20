@@ -1,32 +1,18 @@
 package apiCalls;
 
 
-import org.apache.http.HttpEntity;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CookieStore;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
-import utils.CustomCookie;
 import utils.PostObject;
 
 import java.io.IOException;
-import java.net.CookieHandler;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,12 +25,7 @@ public class ApiCalls {
 
 
     public static String getAuthMethodAsString() throws IOException, InterruptedException {
-        HttpRequest request = HttpRequest.newBuilder()
-                .GET()
-                .headers("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0",
-                        "Authorization", "QjdkWkhRY1k3OFZSVno5bDoxNjM5NjYzNTk3MTkz", "X-Client", "fdp-internet-bank/185.0.0",
-                        "Content-Type", "application/json").uri(URI.create("https://online.swedbank.se/TDE_DAP_Portal_REST_WEB/api/v5/identification/"))
-                .build();
+        HttpRequest request = HttpRequest.newBuilder().GET().headers("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0", "Authorization", "QjdkWkhRY1k3OFZSVno5bDoxNjM5NjYzNTk3MTkz", "X-Client", "fdp-internet-bank/185.0.0", "Content-Type", "application/json").uri(URI.create("https://online.swedbank.se/TDE_DAP_Portal_REST_WEB/api/v5/identification/")).build();
         HttpResponse<String> body = client.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(body.body());
         return body.body();
@@ -56,15 +37,12 @@ public class ApiCalls {
     public static CookieStore getCookies() {
         org.apache.http.client.HttpClient client;
         CookieStore cookieStore = new BasicCookieStore();
-        List<CustomCookie>  customCookies = new ArrayList<>();
-       // CustomCookie customCookie = new CustomCookie();
         HttpClientBuilder builder = HttpClientBuilder.create().setDefaultCookieStore(cookieStore);
         client = builder.build();
         HttpGet httpGet = new HttpGet("https://online.swedbank.se/TDE_DAP_Portal_REST_WEB/api/v5/");
         org.apache.http.HttpResponse httpResponse = null;
         try {
             httpResponse = client.execute(httpGet);
-
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -84,53 +62,28 @@ public class ApiCalls {
         try {
             System.out.println(persNr);
             String method = postObjects.get(0).getMethod();
-            HttpRequest request = HttpRequest.newBuilder()
-                    .POST(HttpRequest.BodyPublishers.ofString(
-                            "{\"bankIdOnSameDevice\":\"false\",\"generateEasyLoginId\":\"false\",\"useEasyLogin\":\"false\",\"userId\":\"" + persNr +"\"}"))
-                        // {"bankIdOnSameDevice":"false","generateEasyLoginId":"false","useEasyLogin":"false","userId":"199204302534"}
-                    .headers("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0",
-                            "Authorization", "QjdkWkhRY1k3OFZSVno5bDoxNjM5NzgwNDczNTg1", "X-Client", "fdp-internet-bank/185.0.0",
-                            "Content-Type", "application/json", "Accept", "application/json")
-                    .uri(URI.create("https://online.swedbank.se/TDE_DAP_Portal_REST_WEB/api"
-                            + postObjects.get(0).getUri()))
-                    .header( "Cookie" , JSESSIONID.getValue())
-                    .header("Cookie",SWBTC.getValue())
-                    .header("Cookie", TS01dcfcda.getValue())
-                             .build();
+            HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.ofString("{\"bankIdOnSameDevice\":\"false\",\"generateEasyLoginId\":\"false\",\"useEasyLogin\":\"false\",\"userId\":\"" + persNr + "\"}"))
+                    // {"bankIdOnSameDevice":"false","generateEasyLoginId":"false","useEasyLogin":"false","userId":"199204302534"}
+                    .headers("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0", "Authorization", "QjdkWkhRY1k3OFZSVno5bDoxNjM5NzgwNDczNTg1", "X-Client", "fdp-internet-bank/185.0.0", "Content-Type", "application/json", "Accept", "application/json").uri(URI.create("https://online.swedbank.se/TDE_DAP_Portal_REST_WEB/api" + postObjects.get(0).getUri())).header("Cookie", JSESSIONID.getValue()).header("Cookie", SWBTC.getValue()).header("Cookie", TS01dcfcda.getValue()).build();
 
-             body = client.send(request, HttpResponse.BodyHandlers.ofString());
+            body = client.send(request, HttpResponse.BodyHandlers.ofString());
             System.out.println(body.body());
             System.out.println(body.statusCode());
         } catch (Exception e) {
             System.out.println(e);
 
 
-
-
         }
         try {
-            HttpRequest request = HttpRequest.newBuilder()
-                    .GET()
-                    .headers("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0",
-                            "Authorization", "QjdkWkhRY1k3OFZSVno5bDoxNjM5NzgwNDczNTg1", "X-Client", "fdp-internet-bank/185.0.0",
-                            "Content-Type", "application/json")
-                    .uri(URI.create("https://online.swedbank.se/TDE_DAP_Portal_REST_WEB/api/v5/identification/bankid/mobile/verify"))
-                    .header( "Cookie" , JSESSIONID.getValue())
-                    .header("Cookie",SWBTC.getValue())
-                    .header("Cookie", TS01dcfcda.getValue())
-                    .build();
+            HttpRequest request = HttpRequest.newBuilder().GET().headers("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0", "Authorization", "QjdkWkhRY1k3OFZSVno5bDoxNjM5NzgwNDczNTg1", "X-Client", "fdp-internet-bank/185.0.0", "Content-Type", "application/json").uri(URI.create("https://online.swedbank.se/TDE_DAP_Portal_REST_WEB/api/v5/identification/bankid/mobile/verify")).header("Cookie", JSESSIONID.getValue()).header("Cookie", SWBTC.getValue()).header("Cookie", TS01dcfcda.getValue()).build();
 
             HttpResponse<String> body1 = client.send(request, HttpResponse.BodyHandlers.ofString());
             System.out.println("BODY1" + body1.body());
             System.out.println(body1.statusCode());
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e);
         }
-
-
-
-
         return body.body();
     }
 }
