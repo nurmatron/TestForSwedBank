@@ -8,7 +8,6 @@ public class PostObject {
     String method;
 
     public PostObject() {
-
     }
 
     public String getMethod() {
@@ -50,8 +49,6 @@ public class PostObject {
     public void setMessage(String message) {
         this.message = message;
     }
-
-
     @Override
     public String toString() {
         return "PostObject{" + "code='" + code + '\'' + ", message='" + message + '\'' + '\'' + ", uri='" + uri + '\'' + ", method='" + method + '\'' + '}';
